@@ -21,9 +21,9 @@ export class CalendarComponent {
       listPlugin,
     ],
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,today,next',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth,listWeek'
     },
     initialView: 'dayGridMonth',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
