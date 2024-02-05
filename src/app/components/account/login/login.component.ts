@@ -9,6 +9,6 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   constructor(private _router: Router) {
-    this._router.navigate(['tables']);
+    
   }
 }

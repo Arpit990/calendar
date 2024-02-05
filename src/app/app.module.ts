@@ -8,19 +8,22 @@ import { CalendarComponent } from './components/common/calendar/calendar.compone
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutModule } from './module/layout/layout.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    CalendarComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FullCalendarModule
+    FullCalendarModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
