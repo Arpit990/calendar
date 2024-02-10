@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarComponent } from './components/common/calendar/calendar.component';
 import { authGuard } from './core/guard/auth.guard';
 
 const routes: Routes = [
@@ -16,8 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'user',
-    loadChildren: () =>
-      import('src/app/module/layout/layout.module').then((m) => m.LayoutModule),
+    loadChildren: () => import('src/app/module/layout/layout.module').then((m) => m.LayoutModule),
     canActivate: [authGuard]
   }
 ];

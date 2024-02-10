@@ -1,17 +1,43 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, inject, OnInit } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
+
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from '../../../core/event-utils';
+import { DatabaseService } from '../../../services/database.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
+
+  private _databaseService = inject(DatabaseService);
+  private _authService = inject(AuthenticationService);
+  private _router = inject(Router);
+
+  async setFormValues(id: string) {
+    try {
+      const contact = await this._databaseService.getContact(id);
+      if (!contact) return;
+      else {
+        console.log(contact)
+      }
+    } catch (error) { }
+  }
+
+  async changeQuery(query: string) {
+    try {
+      const contacts = await this._databaseService.searchContactByQuery("");
+      console.log(contacts);
+    } catch (error) { }
+  }
+
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
@@ -46,14 +72,32 @@ export class CalendarComponent {
   constructor(private changeDetector: ChangeDetectorRef) {
   }
 
+  ngOnInit(): void {
+    /*this.changeQuery("");
+    this._authService.signin("santokiarpit0@gmail.com", "0812#Arpit");
+    this._authService.checkAuthenticationStatus();
+
+    this._authService.getUserDetails().subscribe((x: any) => {
+      console.log("User info");
+      console.log(x);
+      this.userData = x;
+      this.userData.displayName = "Arpit"
+    });
+
+    this._databaseService.getContacts().subscribe(role => {
+      console.log("Roles:");
+      console.log(role);
+    })*/
+  }
+
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
   }
 
   handleWeekendsToggle() {
-    this.calendarOptions.mutate((options) => {
+    /*this.calendarOptions.mutate((options) => {
       options.weekends = !options.weekends;
-    });
+    });*/
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -82,5 +126,11 @@ export class CalendarComponent {
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+  }
+
+  SignOut() {
+    console.log("Sign Out..!");
+    this._authService.signout();
+    this._router.navigate(['/login']);
   }
 }
