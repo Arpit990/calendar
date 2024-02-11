@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 
 import { Contact, ContactForm } from '../interfaces/Contact';
 
-const PATH = 'role';
+const PATH = 'leaves';
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +26,9 @@ export class DatabaseService {
   private _firestore = inject(Firestore);
   private _collection = collection(this._firestore, PATH);
 
-  getContacts() {
-    return collectionData(this._collection, { idField: 'id' }); //as Observable<Contact[]>;
+  // get data from collection
+  getCollectionDoc(collectionName: string) {
+    return collectionData(collection(this._firestore, collectionName), { idField: 'id' }); //as Observable<Contact[]>;
   }
 
   async getContact(id: string) {
@@ -40,12 +41,8 @@ export class DatabaseService {
     }
   }
 
-  async searchContactByQuery(name: string) {
-    const q = query(
-      this._collection,
-      where('fullName', '>=', name),
-      where('fullName', '<=', name + '\uf8ff'),
-    );
+  async searchByQuery(name: string) {
+    const q = query(this._collection, where('Document ID', '==', '4E9gczvob9R4cu2YYEe2KEprMVk2'));
     const querySnapshot = await getDocs(q);
     let contacts: Contact[] = [];
     querySnapshot.forEach((doc) => {

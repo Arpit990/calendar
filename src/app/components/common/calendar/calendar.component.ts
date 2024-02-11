@@ -7,8 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from '../../../core/event-utils';
 import { DatabaseService } from '../../../services/database.service';
-import { AuthenticationService } from '../../../services/authentication.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-calendar',
@@ -18,8 +17,7 @@ import { Router } from '@angular/router';
 export class CalendarComponent implements OnInit {
 
   private _databaseService = inject(DatabaseService);
-  private _authService = inject(AuthenticationService);
-  private _router = inject(Router);
+  
 
   async setFormValues(id: string) {
     try {
@@ -33,8 +31,8 @@ export class CalendarComponent implements OnInit {
 
   async changeQuery(query: string) {
     try {
-      const contacts = await this._databaseService.searchContactByQuery("");
-      console.log(contacts);
+      //const contacts = await this._databaseService.searchContactByQuery("");
+      //console.log(contacts);
     } catch (error) { }
   }
 
@@ -128,9 +126,5 @@ export class CalendarComponent implements OnInit {
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 
-  SignOut() {
-    console.log("Sign Out..!");
-    this._authService.signout();
-    this._router.navigate(['/login']);
-  }
+  
 }
