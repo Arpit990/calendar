@@ -11,6 +11,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { LayoutModule } from './module/layout/layout.module';
 import { firebaseProviders } from './core/firebase.config';
 import { AccountModule } from './module/account/account.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { AccountModule } from './module/account/account.module';
     LayoutModule,
     AccountModule
   ],
-  providers: [firebaseProviders],
+  providers: [firebaseProviders, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
