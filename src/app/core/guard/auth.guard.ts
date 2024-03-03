@@ -6,13 +6,13 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../../services/authentication.service'; // Adjust path as needed
+import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Observable<boolean> | Promise<boolean> | boolean => {
-  const authService = inject(AuthenticationService);
+) => {
+  const authService = inject(AuthService);
   const _router = inject(Router);
 
   return new Observable<boolean>(observer => {
@@ -22,10 +22,10 @@ export const authGuard: CanActivateFn = (
         observer.next(true);
       }
       else {
-        _router.navigate(['/login']);
+        _router.navigate(['./auth']);
         observer.next(false);
       }
       observer.complete();
     });
-  });  
+  });
 };

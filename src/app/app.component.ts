@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { initializeApp } from "firebase/app";
-import { environment } from '../environments/environment'
 
 @Component({
   selector: 'app-root',
@@ -8,6 +6,5 @@ import { environment } from '../environments/environment'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'calendar';
-  app = initializeApp(environment.firebaseConfig);
+  title = 'Leave Planning';
 }
