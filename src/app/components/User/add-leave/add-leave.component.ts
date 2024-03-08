@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Leave } from 'src/app/core/interface/Leave';
+import { LeaveService } from 'src/app/core/services/leave.service';
 
 @Component({
   selector: 'app-add-leave',
   templateUrl: './add-leave.component.html',
   styleUrl: './add-leave.component.css'
 })
-export class AddLeaveComponent {
+export class AddLeaveComponent implements OnInit {
+
+  private _leaveService = inject(LeaveService);
 
   leave: Leave = {
     id: "",
@@ -14,7 +17,8 @@ export class AddLeaveComponent {
     from_date: new Date(),
     to_date: new Date(),
     leave_type: 0,
-    reason: ""
+    reason: "",
+    not_fixed: false
   };
 
   leaveTypes = [
@@ -25,12 +29,23 @@ export class AddLeaveComponent {
     { label: 'C-OFF', value: 4 }
   ];
 
+  ngOnInit(): void {
+    this._leaveService.getLeaves().subscribe(res => {
+      
+    })
+  }
 
-  onSubmit(leaveForm: any) {
-    if(leaveForm.valid) {
-      console.log(leaveForm.value)
-    } else {
-      console.log("Invalid form data")
-    }    
+  async onSubmit(leaveForm: any) {
+    try {
+      if(leaveForm.valid) {
+        this.leave = leaveForm.value;
+        await this._leaveService.createLeave(this.leave);
+        leaveForm.reset();
+      } else {
+        console.log("Invalid form data")
+      } 
+    } catch (error) {
+      
+    }
   }
 }

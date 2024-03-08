@@ -15,8 +15,6 @@ export class SignInComponent {
   constructor() { }
 
   onSubmit(loginForm: any) {
-    console.log(loginForm.value);
-    console.log(loginForm.value.email);
     this._authService.signin(loginForm.value.email, loginForm.value.password)
       .then(user => {
         if (user) {

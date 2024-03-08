@@ -6,6 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
+import { LeaveService } from 'src/app/core/services/leave.service';
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -13,8 +15,10 @@ import listPlugin from '@fullcalendar/list';
 })
 export class CalendarComponent {
 
+  private _leaveService = inject(LeaveService);
+
   calendarVisible = signal(true);
-  calendarOptions = signal<CalendarOptions>({
+  calendarOptions: CalendarOptions = ({
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -24,45 +28,62 @@ export class CalendarComponent {
     headerToolbar: {
       left: 'prev,today,next',
       center: 'title',
-      right: 'dayGridMonth,listWeek'
+      right: 'dayGridMonth,listWeek,listMonth'
     },
     initialView: 'dayGridMonth',
-    initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
+    buttonText: {
+      dayGridMonth: 'Grid Month',
+      listWeek: 'List Week',
+      listMonth: 'List Month'
+    },
+    views: {
+      dayGridWeek: {
+        titleFormat: ''
+      },
+      listWeek: {
+        titleFormat: ''
+      }
+    },
     weekends: true,
     editable: true,
     selectable: true,
     selectMirror: true,
-    dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
+    dayMaxEvents: true
+
+    /*
+      you can update a remote database when these fire:
+      select: this.handleDateSelect.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      eventsSet: this.handleEvents.bind(this)
+      eventAdd:
+      eventChange:
+      eventRemove:
     */
   });
+
   currentEvents = signal<EventApi[]>([]);
 
   constructor(private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    /*this.changeQuery("");
-    this._authService.signin("santokiarpit0@gmail.com", "0812#Arpit");
-    this._authService.checkAuthenticationStatus();
+    this._leaveService.getLeaves().subscribe(res => {
+      this.calendarOptions.events = res.map(x => {
+        return {
+          id: x.id,
+          title: x.name,
+          start: x.from_date,
+          end: this.addDay(x.to_date.toString()) 
+        }
+      });
+    })
+  }
 
-    this._authService.getUserDetails().subscribe((x: any) => {
-      console.log("User info");
-      console.log(x);
-      this.userData = x;
-      this.userData.displayName = "Arpit"
-    });
-
-    this._databaseService.getContacts().subscribe(role => {
-      console.log("Roles:");
-      console.log(role);
-    })*/
+  addDay(dateString: string) {
+    let date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    let newDateString = date.toISOString().split('T')[0];
+    return newDateString;
   }
 
   handleCalendarToggle() {

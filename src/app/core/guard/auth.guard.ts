@@ -18,7 +18,6 @@ export const authGuard: CanActivateFn = (
   return new Observable<boolean>(observer => {
     return authService.checkAuthenticationStatus().subscribe(user => {
       if (user && user != undefined) {
-        console.log(user);
         observer.next(true);
       }
       else {
