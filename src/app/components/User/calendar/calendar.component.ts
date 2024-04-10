@@ -7,6 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
 import { LeaveService } from 'src/app/core/services/leave.service';
+import { getColor } from '../../../core/utils/color';
 
 @Component({
   selector: 'app-calendar',
@@ -73,7 +74,13 @@ export class CalendarComponent {
           id: x.id,
           title: x.name,
           start: x.from_date,
-          end: this.addDay(x.to_date.toString()) 
+          end: this.addDay(x.to_date.toString()),
+          description: x.reason,
+          color: getColor(x.leave_type)?.bgColor,
+          textColor: getColor(x.leave_type)?.textColor,
+          extendedProps: {
+            notFixed: x.not_fixed
+          }
         }
       });
     })

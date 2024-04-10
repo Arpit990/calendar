@@ -1,12 +1,24 @@
 <div class='container my-4'>
-  
-    <div class='demo-app-main'>
-      <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions' >
-        <ng-template #eventContent let-arg>
-          <!-- <b>{{ arg.timeText }}</b> -->
-          <b>{{ arg.event.title }}</b>
-        </ng-template>
-      </full-calendar>
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex flex-row py-5 justify-content-between">
+        <div class="bg-light-success text-success p-3 fw-semibold fw-6 mx-2">Earned Leave</div>    
+        <div class="bg-light-primary text-primary p-3 fw-semibold fw-6 mx-2">Casual Leave</div>    
+        <div class="bg-light-info text-info p-3 fw-semibold fw-6 mx-2">Compensatory Off</div>    
+        <div class="bg-light-warning text-warning p-3 fw-semibold fw-6 mx-2">Public Holiday</div>    
+        <div class="bg-light-danger text-danger p-3 fw-semibold fw-6 mx-2">Leave Without Pay</div>     
+      </div>
     </div>
-  
-  </div> 
+    <div class="card-body">
+      <div class='demo-app-main'>
+        <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions' >
+          <ng-template #eventContent let-arg>
+            <!-- <b>{{ arg.timeText }}</b> -->
+            {{ arg.event.title }} {{ arg.event.extendedProps.notFixed == true ? ' - Not Fixed' : '' }}
+          </ng-template>
+        </full-calendar>
+      </div>
+    </div>
+  </div>  
+</div>
+
